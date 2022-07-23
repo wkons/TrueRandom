@@ -99,7 +99,7 @@ void ResetRnd()
 	  posAL[i][j]=1;
 	  posAN[i][j]=0;
 
-	  posO[i][j]=rnd->randInt()%100;
+	  posO[i][j]=1+rnd->randInt()%100;
 
 	  if (rnd->randInt()%2)
 	  {
