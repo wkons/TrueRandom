@@ -17,9 +17,9 @@ Graphics::TBitmap *bmp;
 
 bool start=0;
 
-int in[SZ_N];
+int posAL[SZ_N][SZ_N];
+int posAN[SZ_N][SZ_N];
 
-int posA[SZ_N][SZ_N];
 int posO[SZ_N][SZ_N];
 
 char net[SZ_N][SZ_N];
@@ -59,7 +59,14 @@ char DigitalM(char L, char R, int i, int j)
 
   if (rz)
   {
-	posA[i][j]++;
+	posAN[i][j]++;
+
+	if (posAN[i][j]>=posAL[i][j])
+	{
+	  posAL[i][j]++;
+
+	  posAN[i][j]=0;
+	}
 
 	posO[i][j]++;
 
@@ -72,7 +79,9 @@ char DigitalM(char L, char R, int i, int j)
 	if (!posO[i][j]) posO[i][j]--;
   }
 
-  rz^=InfReg(posA[i][j])^InfReg(posO[i][j]);
+  char bitA=posAL[i][j]%2;
+
+  rz^=InfReg(posO[i][j])^bitA;
 
   return rz;
 }
@@ -87,11 +96,15 @@ void ResetRnd()
 	{
 	  net[i][j]=0;
 
-	  posA[i][j]=1+rnd->randInt()%2;
+	  posAL[i][j]=1;
+	  posAN[i][j]=0;
 
-	  posO[i][j]=-1+2*(rnd->randInt()%2);
+	  posO[i][j]=rnd->randInt()%100;
 
-	  in[j]=rnd->randInt()%2;
+	  if (rnd->randInt()%2)
+	  {
+		posO[i][j]*=-1;
+	  }
 	}
   }
   for (int j=0;j<SZ_N;j++)
@@ -302,9 +315,7 @@ void __fastcall TForm1::FormPaint(TObject *Sender)
 
 void __fastcall TForm1::Timer1Timer(TObject *Sender)
 {
-  int speed=10;
-
-  for (int z=0;z<speed;z++)
+  for (int z=0;z<100;z++)
   {
 	RndBit();
   }
@@ -360,18 +371,39 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
   }
 
   Memo1->Lines->Add("-----------------------");
+
+/*
+  posAN[0][0]=0;
+  posAL[0][0]=1;
+
+  for (int i=0;i<50;i++)
+  {
+	sprintf(tt,"%3ld: %ld",i,posAL[0][0]%2);
+
+	Memo1->Lines->Add(tt);
+
+	posAN[0][0]++;
+
+	if (posAN[0][0]>=posAL[0][0])
+	{
+	  posAL[0][0]++;
+
+	  posAN[0][0]=0;
+	}
+  }
+*/
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::Button4Click(TObject *Sender)
 {
-  char txt[1001];
+  char txt[5001];
 
   int pp=0;
 
   char bt;
 
-  for (int i=0;i<1000;i++)
+  for (int i=0;i<5000;i++)
   {
 	bt=RndBit();
 
@@ -380,7 +412,7 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 	txt[i]=bt+'0';
   }
 
-  txt[1000]=0;
+  txt[5000]=0;
 
   Memo1->Lines->Add(txt);
 
