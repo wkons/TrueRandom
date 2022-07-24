@@ -57,6 +57,7 @@ char DigitalM(char L, char R, int i, int j)
   if (rz)
   {
 	// Обработка Альфа значений маятника
+
 	posAN[i][j]++;
 
 	if (posAN[i][j]>=posAL[i][j])
