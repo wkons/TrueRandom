@@ -43,10 +43,7 @@ char InfReg (int p)
 	f=0; p=-p;
   }
 
-  for (; i<p; a++)
-  {
-	i+=a;
-  }
+  for (; i<p; a++) i+=a;
 
   return (a%2)^f;
 }
@@ -59,6 +56,7 @@ char DigitalM(char L, char R, int i, int j)
 
   if (rz)
   {
+	// Обработка Альфа значений маятника
 	posAN[i][j]++;
 
 	if (posAN[i][j]>=posAL[i][j])
@@ -68,12 +66,16 @@ char DigitalM(char L, char R, int i, int j)
 	  posAN[i][j]=0;
 	}
 
+	// Обработка Омега значений маятника
+
 	posO[i][j]++;
 
 	if (!posO[i][j]) posO[i][j]++;
   }
   else
   {
+	// Обработка Омега значений маятника
+
 	posO[i][j]--;
 
 	if (!posO[i][j]) posO[i][j]--;

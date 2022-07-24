@@ -17,8 +17,6 @@ Graphics::TBitmap *bmp;
 
 bool start=0;
 
-int in[SZ_N];
-
 int posAL[SZ_N][SZ_N];
 int posAN[SZ_N][SZ_N];
 
@@ -101,9 +99,12 @@ void ResetRnd()
 	  posAL[i][j]=1;
 	  posAN[i][j]=0;
 
-	  posO[i][j]=-1+2*(rnd->randInt()%2);
+	  posO[i][j]=1+rnd->randInt()%100;
 
-	  in[j]=rnd->randInt()%2;
+	  if (rnd->randInt()%2)
+	  {
+		posO[i][j]*=-1;
+	  }
 	}
   }
   for (int j=0;j<SZ_N;j++)
@@ -396,13 +397,13 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 
 void __fastcall TForm1::Button4Click(TObject *Sender)
 {
-  char txt[1001];
+  char txt[5001];
 
   int pp=0;
 
   char bt;
 
-  for (int i=0;i<1000;i++)
+  for (int i=0;i<5000;i++)
   {
 	bt=RndBit();
 
@@ -411,7 +412,7 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 	txt[i]=bt+'0';
   }
 
-  txt[1000]=0;
+  txt[5000]=0;
 
   Memo1->Lines->Add(txt);
 
